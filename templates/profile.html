@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Secure Digital Voting Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="glass-container" style="max-width: 650px;">
+        <div class="header-section">
+            <div class="icon-wrapper" style="display: inline-flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-indigo); filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.4));">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <h1>Voter Profile</h1>
+            <p>Review and modify your registered voter details</p>
+        </div>
+        
+        <div class="profile-card">
+            <div class="profile-field">
+                <span class="field-label">First Name</span>
+                <span class="field-value">{{ profile[0] }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="field-label">Middle Name</span>
+                <span class="field-value">{{ profile[1] }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="field-label">Last Name</span>
+                <span class="field-value">{{ profile[2] }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="field-label">Registered Phone</span>
+                <span class="field-value">{{ profile[3] }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="field-label">Registered Email</span>
+                <span class="field-value">{{ profile[4] }}</span>
+            </div>
+            <div class="profile-field">
+                <span class="field-label">Date of Birth</span>
+                <span class="field-value">{{ profile[5] }}</span>
+            </div>
+        </div>
+        
+        <form id="updateForm">
+            <h3 style="margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px;">Modify Information</h3>
+            
+            <div class="form-group">
+                <label for="updateType">Select Field to Update</label>
+                <select id="updateType" required onchange="updatePlaceholder()">
+                    <option value="">Choose attribute</option>
+                    <option value="name">Name (First Middle Last)</option>
+                    <option value="phone">Phone Number</option>
+                    <option value="email">Email Address</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="updateValue">New Value</label>
+                <input type="text" id="updateValue" placeholder="Enter new value" required>
+            </div>
+            
+            <div class="button-row">
+                <button type="submit" class="btn btn-indigo" style="display: inline-flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Save Changes
+                </button>
+                <a href="/dashboard" class="btn btn-muted" style="display: inline-flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        function updatePlaceholder() {
+            const updateType = document.getElementById('updateType').value;
+            const inputField = document.getElementById('updateValue');
+            
+            switch(updateType) {
+                case 'name':
+                    inputField.placeholder = 'Enter First Middle Last (separated by spaces)';
+                    inputField.removeAttribute('maxlength');
+                    break;
+                case 'phone':
+                    inputField.placeholder = 'Enter 10-digit phone number';
+                    inputField.maxLength = 10;
+                    break;
+                case 'email':
+                    inputField.placeholder = 'Enter new email address';
+                    inputField.removeAttribute('maxlength');
+                    break;
+                default:
+                    inputField.placeholder = 'Enter new value';
+            }
+        }
+        
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const updateType = document.getElementById('updateType').value;
+            const updateValue = document.getElementById('updateValue').value.trim();
+            
+            if (!updateType || !updateValue) {
+                showToast('Please fill all fields', 'error');
+                return;
+            }
+            
+            showLoader('Updating profile attributes...');
+            
+            const data = {
+                type: updateType,
+                value: updateValue
+            };
+            
+            try {
+                const response = await fetch('/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                hideLoader();
+                
+                if (result.success) {
+                    showToast(result.message, 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    showToast(result.message || 'Update failed!', 'error');
+                }
+            } catch (error) {
+                hideLoader();
+                showToast('Update error: ' + error.message, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

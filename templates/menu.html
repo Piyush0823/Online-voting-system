@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Digital Voting Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            transition: var(--transition-smooth);
+        }
+        .btn-card:hover .card-icon {
+            transform: scale(1.08) rotate(2deg);
+        }
+        
+        /* Dashboard Card Hover */
+        .btn-card.card-dashboard:hover {
+            background: rgba(129, 140, 248, 0.04);
+            border-color: var(--accent-indigo);
+            box-shadow: 0 12px 25px rgba(129, 140, 248, 0.12);
+        }
+        .btn-card.card-dashboard:hover .card-icon {
+            background: rgba(129, 140, 248, 0.08);
+            border-color: var(--accent-indigo);
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
+        }
+        
+        /* Register Card Hover */
+        .btn-card.card-register:hover {
+            background: rgba(45, 212, 191, 0.04);
+            border-color: var(--accent-teal);
+            box-shadow: 0 12px 25px rgba(45, 212, 191, 0.12);
+        }
+        .btn-card.card-register:hover .card-icon {
+            background: rgba(45, 212, 191, 0.08);
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 15px rgba(45, 212, 191, 0.2);
+        }
+        
+        /* Results Card Hover */
+        .btn-card.card-results:hover {
+            background: rgba(244, 63, 94, 0.04);
+            border-color: var(--accent-rose);
+            box-shadow: 0 12px 25px rgba(244, 63, 94, 0.12);
+        }
+        .btn-card.card-results:hover .card-icon {
+            background: rgba(244, 63, 94, 0.08);
+            border-color: var(--accent-rose);
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="glass-container" style="max-width: 650px;">
+        <div class="header-section">
+            <div class="icon-wrapper" style="display: inline-flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-indigo); filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.4));">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M12 2v9"></path>
+                    <path d="M8 5h8"></path>
+                </svg>
+            </div>
+            <h1>Secure Digital Voting</h1>
+            <p>Your Voice, Your Future. Cast Your Vote Securely.</p>
+        </div>
+        
+        <div class="btn-grid" style="grid-template-columns: 1fr;">
+            <a href="/login" class="btn-card card-dashboard">
+                <div class="card-icon" style="color: var(--accent-indigo);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <span class="btn-title">Access Voter Dashboard</span>
+                <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Sign in with your Voter ID & Aadhaar</span>
+            </a>
+            
+            <a href="/signup" class="btn-card card-register">
+                <div class="card-icon" style="color: var(--accent-teal);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="17" y1="11" x2="23" y2="11"></line>
+                    </svg>
+                </div>
+                <span class="btn-title">New Voter Registration</span>
+                <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Register using your Aadhaar number</span>
+            </a>
+            
+            <a href="/results" class="btn-card card-results">
+                <div class="card-icon" style="color: var(--accent-rose);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </div>
+                <span class="btn-title">View Real-time Results</span>
+                <span style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Explore live voting statistics and rankings</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
